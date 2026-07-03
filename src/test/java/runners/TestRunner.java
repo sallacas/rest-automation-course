@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "steps",
-        tags = "@Create",
+        tags = "@ProductNotFound",
         snippets = CucumberOptions.SnippetType.CAMELCASE,
         plugin = {"pretty", "html:target/cucumber-reports.html"}
 )

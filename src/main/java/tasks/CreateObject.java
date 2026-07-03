@@ -2,6 +2,7 @@ package tasks;
 
 import lombok.RequiredArgsConstructor;
 import model.ResponseDTO;
+import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
@@ -17,6 +18,7 @@ public class CreateObject implements Task {
         actor.attemptsTo(
                 Post.to(PATH_OBJECTS).with(request -> request.body(object).log().all())
         );
+        SerenityRest.lastResponse().prettyPrint();
     }
     public static CreateObject with(ResponseDTO object) {
         return Tasks.instrumented(CreateObject.class, object);

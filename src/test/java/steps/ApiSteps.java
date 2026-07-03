@@ -16,10 +16,9 @@ import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 import org.hamcrest.Matchers;
 import questions.ResponseField;
 import questions.StatusCode;
-import tasks.CreateObject;
-import tasks.GetObjectById;
+import tasks.*;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 public class ApiSteps {
@@ -39,7 +38,6 @@ public class ApiSteps {
         actor.attemptsTo(
             GetObjectById.withId(id)
         );
-        SerenityRest.lastResponse().getBody().prettyPrint();
     }
 
     @Then("el código de respuesta debe ser {int}")
@@ -58,17 +56,43 @@ public class ApiSteps {
 
     @When("crear un objeto con los siguientes datos")
     public void crearUnObjetoConLosSiguientesDatos() {
-        ResponseDTO product = ResponseDTO.builder()
-                .name("Producto 1")
-                .data(ObjectData.builder()
-                        .year(2023)
-                        .price(99.99)
-                        .cpuModel("Intel Core i7")
-                        .hardDiskSize("1TB")
-                        .build())
-                .build();
         actor.attemptsTo(
-                CreateObject.with(product)
+                CreateObject.with(ResponseDTO.createBody())
+        );
+    }
+
+    @When("modifico el objeto con ID {string} con los siguientes datos")
+    public void modificoElObjetoConIDConLosSiguientesDatos(String id) {
+        actor.attemptsTo(
+                PutObject.with(id, ResponseDTO.putBody())
+        );
+    }
+
+    @And("validamos que {string} no sea nula")
+    public void validamosQueNoSeaNula(String path) {
+        actor.should(
+                GivenWhenThen.seeThat("El valor del campo es: ", ResponseField.from(path), notNullValue())
+        );
+    }
+
+    @When("modifico parcialmente el objeto con ID {string} con los siguientes datos")
+    public void modificoParcialmenteElObjetoConIDConLosSiguientesDatos(String id) {
+        actor.attemptsTo(
+                PatchObject.with(id, ResponseDTO.partialBody())
+        );
+    }
+
+    @When("elimino el objeto con ID {string}")
+    public void eliminoElObjetoConID(String id) {
+        actor.attemptsTo(
+                DeleteObject.withId(id)
+        );
+    }
+
+    @And("validamos que {string} contenga el siguiente texto {string}")
+    public void validamosQueContengaElSiguienteTexto(String path, String value) {
+        actor.should(
+                GivenWhenThen.seeThat("El valor del campo es: ", ResponseField.from(path), containsString(value))
         );
     }
 }
