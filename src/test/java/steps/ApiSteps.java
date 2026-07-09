@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -17,6 +18,8 @@ import org.hamcrest.Matchers;
 import questions.ResponseField;
 import questions.StatusCode;
 import tasks.*;
+
+import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 
@@ -55,9 +58,10 @@ public class ApiSteps {
     }
 
     @When("crear un objeto con los siguientes datos")
-    public void crearUnObjetoConLosSiguientesDatos() {
+    public void crearUnObjetoConLosSiguientesDatos(DataTable table) {
+        Map<String, String> datos = table.asMaps(String.class, String.class).getFirst();
         actor.attemptsTo(
-                CreateObject.with(ResponseDTO.createBody())
+                CreateObject.with(ResponseDTO.createBody(datos))
         );
     }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,14 +20,14 @@ public class ResponseDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ObjectData data;
 
-    public static ResponseDTO createBody() {
+    public static ResponseDTO createBody(Map<String, String> datos) {
         return ResponseDTO.builder()
-                .name("Producto 1")
+                .name(datos.get("name"))
                 .data(ObjectData.builder()
-                        .year(2023)
-                        .price(99.99)
-                        .cpuModel("Intel Core i7")
-                        .hardDiskSize("1TB")
+                        .year(Integer.parseInt(datos.get("year")))
+                        .price(Double.parseDouble(datos.get("price")))
+                        .cpuModel(datos.get("cpuModel"))
+                        .hardDiskSize(datos.get("hardDisk"))
                         .build())
                 .build();
     }
