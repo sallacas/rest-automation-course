@@ -3,11 +3,17 @@ Feature: Modificacion parcial de objetos
   Quiero poder modificar parcialmente objetos
   Para poder obtener almacenar los objetos disponibles
 
-  @Patch
-  Scenario: Modificar parcialmente un objeto existente
+  @ModificacionParcialDeObjetos
+  Scenario Outline: Modificar parcialmente un objeto existente
     Given que Juan puede consumir la API
-    When modifico parcialmente el objeto con ID "ff8081819d82fab6019f2586a1d80fcb" con los siguientes datos
-    Then el código de respuesta debe ser 200
-    And validamos que "data.year" sea igual a "2025"
-    And validamos que "name" sea igual a "Zenbook 15"
+    When modifico parcialmente el objeto con ID "<id>" con los siguientes datos
+        | name | <name> |
+        | year | <year> |
+    Then el código de respuesta debe ser <statusCode>
+    And validamos que "data.year" sea igual a "<year>"
+    And validamos que "name" sea igual a "<name>"
     And validamos que "updatedAt" no sea nula
+
+    Examples:
+      | id                               | name       | year | statusCode |
+      | ff8081819d82fab6019f62042e545fb4 | Zenbook 15 | 2025 | 200        |

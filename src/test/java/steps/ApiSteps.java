@@ -1,20 +1,16 @@
 package steps;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
-import model.ObjectData;
 import model.ResponseDTO;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.GivenWhenThen;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
-import org.hamcrest.Matchers;
 import questions.ResponseField;
 import questions.StatusCode;
 import tasks.*;
@@ -61,14 +57,15 @@ public class ApiSteps {
     public void crearUnObjetoConLosSiguientesDatos(DataTable table) {
         Map<String, String> datos = table.asMaps(String.class, String.class).getFirst();
         actor.attemptsTo(
-                CreateObject.with(ResponseDTO.createBody(datos))
+                CreateObject.with(ResponseDTO.build(datos))
         );
     }
 
     @When("modifico el objeto con ID {string} con los siguientes datos")
-    public void modificoElObjetoConIDConLosSiguientesDatos(String id) {
+    public void modificoElObjetoConIDConLosSiguientesDatos(String id, DataTable table) {
+        Map<String, String> map = table.asMap();
         actor.attemptsTo(
-                PutObject.with(id, ResponseDTO.putBody())
+                PutObject.with(id, ResponseDTO.build(map))
         );
     }
 
@@ -80,9 +77,10 @@ public class ApiSteps {
     }
 
     @When("modifico parcialmente el objeto con ID {string} con los siguientes datos")
-    public void modificoParcialmenteElObjetoConIDConLosSiguientesDatos(String id) {
+    public void modificoParcialmenteElObjetoConIDConLosSiguientesDatos(String id, DataTable table) {
+        Map<String, String> map = table.asMap();
         actor.attemptsTo(
-                PatchObject.with(id, ResponseDTO.partialBody())
+                PatchObject.with(id, ResponseDTO.build(map))
         );
     }
 

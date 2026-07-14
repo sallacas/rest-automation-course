@@ -14,5 +14,5 @@ Feature: Consulta de objetos
       | id                               | statusCode | value                | path  |
       | 7                                | 200        | Apple MacBook Pro 16 | name  |
       | 8                                | 200        | Apple Watch Series 8 | name  |
-      | ff8081819d82fab6019f2586a1d80fcb | 404        | was not found.       | error |
-      |                                  | 404        | was not found.       | error |
+      | ff8081819d82fab6019f62042e545fb4 | 200        | Zenbook 15           | name  |
+      | invalid-id                       | 404        | was not found.       | error |

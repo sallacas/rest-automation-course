@@ -3,7 +3,7 @@ Feature: Creacion de objetos
   Quiero poder crear objetos
   Para poder obtener almacenar los objetos disponibles
 
-  @Create
+  @CreacionDeObjetos
   Scenario Outline: Crear un nuevo objeto - <name>
     Given que Juan puede consumir la API
     When crear un objeto con los siguientes datos
