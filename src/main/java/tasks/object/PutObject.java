@@ -1,4 +1,4 @@
-package tasks;
+package tasks.object;
 
 import lombok.RequiredArgsConstructor;
 import model.ResponseDTO;

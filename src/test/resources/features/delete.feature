@@ -8,7 +8,7 @@ Feature: Eliminacion de objetos
     Given que Juan puede consumir la API
     When elimino el objeto con ID "<id>"
     Then el código de respuesta debe ser <statusCode>
-    And validamos que "message" contenga el siguiente texto "<value>"
+    And validamos que "<path>" contenga el siguiente texto "<value>"
 
     Examples:
       | id                               | statusCode | value             | path    |

@@ -1,11 +1,14 @@
 package steps;
 
+import interactions.SaveToken;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
+import model.CreateUser;
 import model.ResponseDTO;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
@@ -13,7 +16,10 @@ import net.serenitybdd.screenplay.GivenWhenThen;
 import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 import questions.ResponseField;
 import questions.StatusCode;
-import tasks.*;
+import tasks.collection.CreateCollectionObject;
+import tasks.collection.DoLogin;
+import tasks.collection.DoRegister;
+import tasks.object.*;
 
 import java.util.Map;
 
@@ -95,6 +101,32 @@ public class ApiSteps {
     public void validamosQueContengaElSiguienteTexto(String path, String value) {
         actor.should(
                 GivenWhenThen.seeThat("El valor del campo es: ", ResponseField.from(path), containsString(value))
+        );
+    }
+
+    @When("creo un usuario con los siguientes datos")
+    public void creoUnUsuarioConLosSiguientesDatos(DataTable table) {
+        Map<String, String> map = table.asMap();
+        actor.attemptsTo(
+                DoRegister.with(CreateUser.build(map))
+        );
+    }
+
+    @When("el va a iniciar sesion con el correo {string} y la contraseña {string}")
+    public void elVaAIniciarSesionConElCorreoYLaContraseña(String email, String password) {
+        actor.attemptsTo(
+                DoLogin.with(CreateUser.buildLogin(email, password))
+        );
+        actor.attemptsTo(
+                SaveToken.fromResponse()
+        );
+    }
+
+    @When("creo un objeto con los siguientes datos en la coleccion {string}")
+    public void creoUnObjetoConLosSiguientesDatosEnLaColeccion(String collection, DataTable table) {
+        Map<String, String> datos = table.asMaps(String.class, String.class).getFirst();
+        actor.attemptsTo(
+                CreateCollectionObject.with(collection, ResponseDTO.build(datos))
         );
     }
 }
